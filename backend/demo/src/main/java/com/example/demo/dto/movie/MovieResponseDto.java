@@ -1,4 +1,4 @@
-package com.example.demo.dto;
+package com.example.demo.dto.movie;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
