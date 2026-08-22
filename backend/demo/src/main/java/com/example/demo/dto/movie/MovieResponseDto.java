@@ -13,5 +13,4 @@ public class MovieResponseDto {
     private String description;
     private Integer durationMinutes;
     private String posterUrl;
-    
 }

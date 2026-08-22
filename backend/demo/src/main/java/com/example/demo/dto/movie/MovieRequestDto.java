@@ -10,13 +10,13 @@ import lombok.Setter;
 @Setter
 public class MovieRequestDto {
 
-    @NotBlank (message = "Title is required")
+    @NotBlank(message = "Title is required")
     private String title;
 
     private String description;
 
-    @NotNull (message = "Duration is reqired")
-    @Positive (message = "Duration must be positive")
+    @NotNull(message = "Duration is reqired")
+    @Positive(message = "Duration must be positive")
     private Integer durationMinutes;
 
     private String posterUrl;
