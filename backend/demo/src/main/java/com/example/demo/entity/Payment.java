@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.example.demo.entity.enums.PaymentStatus;
+import com.example.demo.enums.PaymentStatus;
 
 @Entity
 @Table(name = "payments")

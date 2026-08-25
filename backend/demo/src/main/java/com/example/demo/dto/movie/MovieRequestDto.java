@@ -15,7 +15,7 @@ public class MovieRequestDto {
 
     private String description;
 
-    @NotNull(message = "Duration is reqired")
+    @NotNull(message = "Duration is required")
     @Positive(message = "Duration must be positive")
     private Integer durationMinutes;
 

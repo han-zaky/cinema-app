@@ -1,4 +1,4 @@
-package com.example.demo.entity.enums;
+package com.example.demo.enums;
 
 public enum PaymentStatus {
     PAYD,

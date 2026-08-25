@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.SeatType;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,10 @@ public class Seat {
 
     private String rowLetter;
     private Integer seatNumber;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private SeatType seatType;
 
     @ManyToOne
     @JoinColumn(name = "hall_id")

@@ -8,6 +8,7 @@ import com.example.demo.dto.seat.GenerateSeatsRequestDto;
 import com.example.demo.dto.seat.SeatResponseDto;
 import com.example.demo.entity.Hall;
 import com.example.demo.entity.Seat;
+import com.example.demo.enums.SeatType;
 import com.example.demo.repository.HallRepository;
 import com.example.demo.repository.SeatRepository;
 
@@ -25,6 +26,7 @@ public class SeatService {
                 seat.getId(),
                 seat.getRowLetter(),
                 seat.getSeatNumber(),
+                seat.getSeatType(),
                 seat.getHall().getId());
     }
 
@@ -42,21 +44,24 @@ public class SeatService {
         return mapToResponseDto(seat);
     }
 
-    // check this TODO
     public List<SeatResponseDto> generateSeats(GenerateSeatsRequestDto requestDto) {
         Hall hall = hallRepository.findById(requestDto.getHallId())
                 .orElseThrow(() -> new RuntimeException("Hall not found with id: " + requestDto.getHallId()));
 
         List<Seat> seatsToCreate = new java.util.ArrayList<>();
+        int totalRows = requestDto.getRowCount();
 
-        for (int row = 0; row < requestDto.getRowCount(); row++) {
+        for (int row = 0; row < totalRows; row++) {
             String rowLetter = generateRowLetter(row);
+            boolean isDoubleRow = row >= totalRows - 2;
+            SeatType seatType = isDoubleRow ? SeatType.DOUBLE : SeatType.SINGLE;
 
             for (int seatNumber = 1; seatNumber <= requestDto.getSeatsPerRow(); seatNumber++) {
                 Seat seat = new Seat();
                 seat.setHall(hall);
                 seat.setRowLetter(rowLetter);
                 seat.setSeatNumber(seatNumber);
+                seat.setSeatType(seatType);
                 seatsToCreate.add(seat);
             }
         }
