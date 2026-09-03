@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.auth.AuthResponse;
 import com.example.demo.dto.auth.LoginRequest;
+import com.example.demo.dto.auth.RefreshTokenRequest;
 import com.example.demo.dto.auth.RegisterRequest;
 import com.example.demo.service.AuthService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,12 +23,23 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(authService.login(request, httpRequest));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authService.register(request));
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request, HttpServletRequest httpRequest) {
+        return ResponseEntity.ok(authService.register(request, httpRequest));
+    }
+
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@RequestBody RefreshTokenRequest request) {
+        return authService.refreshAccessToken(request);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody RefreshTokenRequest request) {
+        authService.logout(request);
+        return ResponseEntity.noContent().build();
     }
 }
