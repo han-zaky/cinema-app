@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.auth.entity.User;
 import com.example.demo.dto.user.UserRequestDto;
 import com.example.demo.dto.user.UserResponseDto;
-import com.example.demo.entity.User;
 import com.example.demo.enums.Role;
 import com.example.demo.repository.UserRepository;
 

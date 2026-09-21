@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.demo.auth.entity.User;
+
 @Entity
 @Table(name = "reservations")
 @Getter

@@ -12,6 +12,6 @@ export interface registerRequest {
 
 export interface authResponse {
   token: string;
-  email: string; //idk
+  //email: string; //idk
   firstName: string;
 }
