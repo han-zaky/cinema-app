@@ -1,6 +1,7 @@
 package com.example.demo.auth;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +15,7 @@ import com.example.demo.auth.service.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +33,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
+        final String jwt = extractTokenFromCookie(request);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response); // není token -> jede dál, jiný filtr rozhodne o zamítnutí
+        if (jwt == null) {
+            filterChain.doFilter(request, response); // bez tokenu jede dál, autorizace rozhodne
             return;
         }
 
-        final String jwt = authHeader.substring(7); // odřízne "Bearer "
         final String userEmail = jwtService.extractUsername(jwt);
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -53,5 +54,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private String extractTokenFromCookie(HttpServletRequest request) {
+        if (request.getCookies() == null)
+            return null;
+
+        return Arrays.stream(request.getCookies())
+                .filter(c -> "access_token".equals(c.getName())) // sedí s názvem cookie z tvého AuthControlleru
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
     }
 }
