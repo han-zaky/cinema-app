@@ -24,7 +24,7 @@ public class AuthCookieFactory {
                 .secure(true)
                 .sameSite("Strict")
                 .maxAge(Duration.ofDays(7))
-                .path("/api/auth/refresh")
+                .path("/api/auth")
                 .build();
     }
 
@@ -44,7 +44,7 @@ public class AuthCookieFactory {
                 .secure(true)
                 .sameSite("Strict")
                 .maxAge(0)
-                .path("/api/auth/refresh")
+                .path("/api/auth")
                 .build();
     }
 

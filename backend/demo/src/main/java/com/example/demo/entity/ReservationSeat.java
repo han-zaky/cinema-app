@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 @Entity
-@Table(
-    name = "reservation_seats",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"seat_id", "reservation_id"})
-)
+@Table(name = "reservation_seats", uniqueConstraints = @UniqueConstraint(columnNames = { "seat_id", "reservation_id" }))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,4 +25,8 @@ public class ReservationSeat {
     @ManyToOne
     @JoinColumn(name = "seat_id", nullable = false)
     private Seat seat;
+
+    public String getLabel() {
+        return getSeat().getRowLetter() + String.valueOf(getSeat().getSeatNumber());
+    }
 }

@@ -23,9 +23,10 @@ public class ScreeningController {
         return screeningService.getAllScreenings();
     }
 
+    // TODO
     @GetMapping("/{id}")
     public ScreeningResponseDto getScreeningById(@PathVariable Long id) {
-        return screeningService.getScreeningById(id);
+        return null;// screeningService.getScreeningById(id);
     }
 
     @PostMapping

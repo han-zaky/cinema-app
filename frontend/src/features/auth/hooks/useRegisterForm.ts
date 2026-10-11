@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../api/client";
 import { type RegisterRequest, type AuthResponse } from "../types/auth";
+import { useAuth } from "../components/AuthContext";
 
 interface useRegisterFormReturn {
   firstName: string;
@@ -16,6 +17,8 @@ interface useRegisterFormReturn {
   result: AuthResponse | null; //navíc
   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => Promise<void>;
 }
+
+const { setUser } = useAuth();
 
 export function useRegisterForm(): useRegisterFormReturn {
   const [firstName, setFirstName] = useState<string>("");
@@ -38,8 +41,9 @@ export function useRegisterForm(): useRegisterFormReturn {
     setIsLoading(true);
     try {
       const data: RegisterRequest = { firstName, lastName, email, password };
-      const response = await register(data);
-      setResult(response); // uložení výsledku pro zobrazení
+      const res = await register(data);
+      setUser(res);
+      setResult(res); // uložení výsledku pro zobrazení
     } catch (err) {
       setError("Registrace selhala");
     } finally {

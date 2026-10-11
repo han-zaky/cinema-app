@@ -37,11 +37,11 @@ public class SeatService {
                 .toList();
     }
 
-    public SeatResponseDto getSeatById(Long id) {
+    public Seat getSeatById(Long id) {
         Seat seat = seatRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Seat not found with id: " + id));
 
-        return mapToResponseDto(seat);
+        return seat;
     }
 
     public List<SeatResponseDto> generateSeats(GenerateSeatsRequestDto requestDto) {

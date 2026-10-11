@@ -2,21 +2,15 @@ package com.example.demo.dto.reservation;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
 
-@Getter
-@Setter
-public class ReservationRequestDto {
-
-    @NotNull(message = "User ID is required")
-    private Long userId;
-
-    @NotNull(message = "Screening ID is required")
-    private Long screeningId;
-
-    @NotEmpty(message = "At least one seat must be selected")
-    private List<Long> seatIds;
+public record ReservationRequestDto(
+        @NotNull Long screeningId,
+        @NotEmpty @Size(max = 10) List<@NotNull Long> seatIds,
+        @Email @Size(max = 255) String customerEmail,
+        @Size(max = 100) String customerFirstName,
+        @Size(max = 100) String customerLastName) {
 }

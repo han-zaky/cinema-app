@@ -44,11 +44,11 @@ public class ScreeningService {
                 .toList();
     }
 
-    public ScreeningResponseDto getScreeningById(Long id) {
+    public Screening getScreeningById(Long id) {
         Screening screening = screeningRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Screening not found with id: " + id));
 
-        return mapToResponseDto(screening);
+        return screening;
     }
 
     public ScreeningResponseDto createScreening(ScreeningRequestDto requestDto) {

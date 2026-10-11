@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { login } from "../api/client";
+import { useAuth } from "../components/AuthContext";
 
 interface UseLoginFormReturn {
   email: string;
@@ -10,6 +11,8 @@ interface UseLoginFormReturn {
   isLoading: boolean;
   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => Promise<void>;
 }
+
+const { setUser } = useAuth();
 
 export function useLoginForm(): UseLoginFormReturn {
   const [email, setEmail] = useState<string>("");
@@ -28,7 +31,8 @@ export function useLoginForm(): UseLoginFormReturn {
 
     setIsLoading(true);
     try {
-      await login({ email, password });
+      const res = await login({ email, password });
+      setUser(res);
     } catch (err) {
       setError("Přihlášení selhalo!");
     } finally {

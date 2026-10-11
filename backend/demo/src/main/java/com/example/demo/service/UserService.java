@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import java.lang.StackWalker.Option;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,11 +38,12 @@ public class UserService {
                 .toList();
     }
 
-    public UserResponseDto getUserById(Long id) {
+    public User getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
 
-        return mapToResponseDto(user);
+        return user;
+
     }
 
     public UserResponseDto createUser(UserRequestDto requestDto) {
@@ -80,5 +83,14 @@ public class UserService {
             throw new RuntimeException("User not found with id: " + id);
         }
         userRepository.deleteById(id);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found with email: " + email);
+        }
+        return user;
+
     }
 }

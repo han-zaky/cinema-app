@@ -30,9 +30,10 @@ public class SeatController {
         return seatService.getSeatsByHall(hallId);
     }
 
+    // TODO
     @GetMapping("/{id}")
     public SeatResponseDto getSeatById(@PathVariable Long id) {
-        return seatService.getSeatById(id);
+        return null; // seatService.getSeatById(id);
     }
 
     @PostMapping("/generate")

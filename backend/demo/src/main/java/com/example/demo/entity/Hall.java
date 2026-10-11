@@ -8,8 +8,10 @@ import lombok.Getter;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import com.example.demo.enums.HallType;
+
 @Entity
-@Table(name="halls")
+@Table(name = "halls")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -21,6 +23,10 @@ public class Hall {
     private Long id;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private HallType hallType;
 
     @ManyToOne
     @JoinColumn(name = "cinema_id")

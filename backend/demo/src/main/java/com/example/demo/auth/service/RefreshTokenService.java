@@ -33,6 +33,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setTokenHash(hashToken(rawToken));
         refreshToken.setUser(user);
+        refreshToken.setFamilyId(UUID.randomUUID());
         refreshToken.setExpiresAt(Instant.now().plusMillis(refreshExpiration));
         refreshToken.setDeviceInfo(deviceInfo);
         refreshToken.setIpAddress(ipAddress);
