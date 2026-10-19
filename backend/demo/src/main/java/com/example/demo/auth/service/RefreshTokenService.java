@@ -1,5 +1,11 @@
 package com.example.demo.auth.service;
 
+import com.example.demo.auth.repository.RefreshTokenRepository;
+import com.example.demo.auth.dto.RotationResult;
+import com.example.demo.auth.entity.RefreshToken;
+import com.example.demo.common.exception.InvalidTokenException;
+import com.example.demo.user.entity.User;
+
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
@@ -8,12 +14,6 @@ import java.util.UUID;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.auth.dto.RotationResult;
-import com.example.demo.auth.entity.RefreshToken;
-import com.example.demo.auth.entity.User;
-import com.example.demo.auth.repository.RefreshTokenRepository;
-import com.example.demo.exception.InvalidTokenException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

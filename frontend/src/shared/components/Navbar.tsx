@@ -1,10 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../features/auth/api/client";
 import { useAuth } from "../../features/auth/components/AuthContext";
 
 export function Navbar() {
   const navigate = useNavigate();
-  const { user, setUser, isLoading } = useAuth();
+  const { user, setUser, isLoading, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -20,6 +19,7 @@ export function Navbar() {
   return (
     <nav>
       <Link to="/">Home</Link>
+      <Link to="/program">Program</Link>
 
       {!isLoading && !user && (
         <>
@@ -28,7 +28,13 @@ export function Navbar() {
         </>
       )}
 
-      {!isLoading && user && (
+      {!isLoading && user?.role === "ADMIN" && (
+        <>
+          <Link to="/admin/movies">Admin</Link>
+        </>
+      )}
+
+      {!isLoading && (user?.role === "USER" || user?.role === "ADMIN") && (
         <>
           <Link to="/profile">
             <div>

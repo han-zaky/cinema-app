@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { login } from "../api/client";
+import { login } from "../api/authApi";
 import { useAuth } from "../components/AuthContext";
 
 interface UseLoginFormReturn {
@@ -12,9 +12,8 @@ interface UseLoginFormReturn {
   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const { setUser } = useAuth();
-
 export function useLoginForm(): UseLoginFormReturn {
+  const { setUser } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);

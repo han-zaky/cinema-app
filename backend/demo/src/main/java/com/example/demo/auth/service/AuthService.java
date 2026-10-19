@@ -1,20 +1,19 @@
 package com.example.demo.auth.service;
 
+import com.example.demo.auth.dto.LoginRequest;
+import com.example.demo.auth.dto.LoginResponse;
+import com.example.demo.user.repository.UserRepository;
+import com.example.demo.auth.dto.AuthResponse;
+import com.example.demo.auth.dto.RegisterRequest;
+import com.example.demo.auth.dto.RotationResult;
+import com.example.demo.auth.entity.RefreshToken;
+import com.example.demo.user.enums.Role;
+import com.example.demo.user.entity.User;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.auth.dto.AuthResponse;
-import com.example.demo.auth.dto.LoginRequest;
-import com.example.demo.auth.dto.LoginResponse;
-import com.example.demo.auth.dto.RefreshTokenRequest;
-import com.example.demo.auth.dto.RegisterRequest;
-import com.example.demo.auth.dto.RotationResult;
-import com.example.demo.auth.entity.RefreshToken;
-import com.example.demo.auth.entity.User;
-import com.example.demo.enums.Role;
-import com.example.demo.repository.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,8 @@ public class AuthService {
         String ipAddress = extractClientIp(httpRequest);
         String refreshToken = refreshTokenService.generateRefreshToken(user, deviceInfo, ipAddress);
 
-        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName(),
+                user.getRole());
 
         return new LoginResponse(authResponse, accessToken, refreshToken);
     }
@@ -57,7 +57,8 @@ public class AuthService {
         String newAccessToken = jwtService.generateToken(user);
 
         RotationResult result = refreshTokenService.rotate(rawRefreshToken, deviceInfo, ipAddress);
-        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName(),
+                user.getRole());
         // nutná rotace -----
         return new LoginResponse(authResponse, newAccessToken, result.rawRefreshToken());
     }
@@ -80,7 +81,8 @@ public class AuthService {
         String deviceInfo = httpRequest.getHeader("User-Agent");
         String refreshToken = refreshTokenService.generateRefreshToken(user, deviceInfo, ipAddress);
 
-        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName());
+        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getFirstName(), user.getLastName(),
+                user.getRole());
 
         return new LoginResponse(authResponse, accessToken, refreshToken);
     }

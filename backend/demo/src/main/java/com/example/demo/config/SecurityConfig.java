@@ -1,8 +1,11 @@
 package com.example.demo.config;
 
+import com.example.demo.auth.JwtAuthenticationFilter;
+
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,8 +26,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.demo.auth.JwtAuthenticationFilter;
-
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -38,18 +39,26 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService; // možná userDetailsServiceImlpl
 
-    // TODO -> nemám pořešenou csrf obranu
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable) // MUSÍM DOŘEŠIT CSRF
+                .csrf(AbstractHttpConfigurer::disable) // TODO -> nemám pořešenou csrf obranu
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // login/register bez tokenu
+                        // 1. Login/register for all
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // 2. Browsing for everyone (GET)
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/movies/**", "/api/screenings/**", "/api/cinemas/**")
+                        .permitAll()
+                        // 3. Reservation can be created enen by quest user
+                        .requestMatchers("/api/reservations/**").permitAll()
+                        // 4. Creating/Editing content -> admin only
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // 5. Everything else (profile, reservation, payment) -> logged in
+                        .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // klíčové! žádná session
-                )
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(e -> e
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authenticationProvider(authenticationProvider())

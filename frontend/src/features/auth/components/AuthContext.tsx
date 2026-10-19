@@ -1,5 +1,6 @@
-import { getCurrentUser } from "../api/client";
+import { getCurrentUser } from "../api/authApi";
 import type { AuthResponse } from "../types/auth";
+import { logout } from "../api/authApi";
 
 import {
   createContext,
@@ -9,10 +10,13 @@ import {
   type ReactNode,
 } from "react";
 
+export type Role = "USER" | "ADMIN";
+
 interface AuthContextValue {
   user: AuthResponse | null;
   setUser: (user: AuthResponse | null) => void;
   isLoading: boolean;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -23,13 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     getCurrentUser()
-      .then(setUser)
+      .then((data) => setUser(data))
       .catch(() => setUser(null))
       .finally(() => setIsLoading(false));
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, isLoading }}>
+    <AuthContext.Provider value={{ user, setUser, isLoading, logout }}>
       {children}
     </AuthContext.Provider>
   );

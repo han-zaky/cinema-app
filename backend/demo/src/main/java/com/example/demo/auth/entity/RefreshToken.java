@@ -1,5 +1,8 @@
 package com.example.demo.auth.entity;
 
+import com.example.demo.auth.dto.RotationResult;
+import com.example.demo.user.entity.User;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -15,8 +18,6 @@ import java.util.Base64;
 import java.util.UUID;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
-import com.example.demo.auth.dto.RotationResult;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;

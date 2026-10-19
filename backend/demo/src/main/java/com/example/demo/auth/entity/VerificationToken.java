@@ -1,5 +1,9 @@
 package com.example.demo.auth.entity;
 
+import com.example.demo.user.entity.User;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -10,8 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import lombok.NoArgsConstructor;
+
+//TODO - email verification
 
 @Entity
+@NoArgsConstructor
 @Table(name = "verification_tokens")
 public class VerificationToken {
 
@@ -26,15 +34,15 @@ public class VerificationToken {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    private LocalDateTime expiryDate;
+    private Instant expiryDate;
 
     public VerificationToken(User user, String token) {
         this.user = user;
         this.token = token;
-        this.expiryDate = LocalDateTime.now().plusHours(24);
+        this.expiryDate = Instant.now().plus(Duration.ofHours(24));
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiryDate);
+        return Instant.now().isAfter(expiryDate);
     }
 }

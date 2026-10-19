@@ -1,5 +1,8 @@
 package com.example.demo.auth.repository;
 
+import com.example.demo.auth.entity.RefreshToken;
+import com.example.demo.user.entity.User;
+
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,9 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
-import com.example.demo.auth.entity.RefreshToken;
-import com.example.demo.auth.entity.User;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {
     Optional<RefreshToken> findByTokenHash(String tokenHash);

@@ -1,4 +1,6 @@
 package com.example.demo.auth.dto;
 
-public record AuthResponse(String email, String firstName, String lastName) {
+import com.example.demo.user.enums.Role;
+
+public record AuthResponse(String email, String firstName, String lastName, Role role) {
 }

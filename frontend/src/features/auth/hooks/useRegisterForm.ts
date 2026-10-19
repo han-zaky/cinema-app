@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { register } from "../api/client";
+import { register } from "../api/authApi";
 import { type RegisterRequest, type AuthResponse } from "../types/auth";
 import { useAuth } from "../components/AuthContext";
 
@@ -18,9 +18,9 @@ interface useRegisterFormReturn {
   handleSubmit: (e: React.SubmitEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const { setUser } = useAuth();
-
 export function useRegisterForm(): useRegisterFormReturn {
+  const { setUser } = useAuth();
+
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");

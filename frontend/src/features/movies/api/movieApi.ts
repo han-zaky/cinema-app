@@ -1,13 +1,12 @@
-import type { Movie } from "../types/movie";
-
-const API_URL = "http://localhost:8080/api/movies";
+import { apiFetchJson } from "../../../shared/api/client";
+import { crud } from "../../../shared/api/crud";
+import type { Movie, MovieRequest } from "../types/movie";
 
 export async function fetchMovies(): Promise<Movie[]> {
-  const response = await fetch(API_URL);
-
-  if (!response.ok) {
-    throw new Error("Couldn't fetch movies.");
-  }
-
-  return response.json();
+  return apiFetchJson<Movie[]>("/api/movies");
 }
+
+export const movieAdminApi = crud<Movie, MovieRequest>(
+  "/api/movies",
+  "/api/admin/movies",
+);
